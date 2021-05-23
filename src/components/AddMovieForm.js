@@ -8,6 +8,7 @@ const AddMovieForm = (props) => {
     const { push } = useHistory();
 
     const [movie, setMovie] = useState({
+        id: props.movies.length,
         title: "",
         director: "",
         genre: "",
@@ -23,6 +24,9 @@ const AddMovieForm = (props) => {
     }
 
     const handleSubmit = (e) => {
+        e.preventDefault();
+        props.addMovie(movie)
+        push('/movies/')
     }
 
     const { title, director, genre, metascore, description } = movie;
@@ -58,7 +62,7 @@ const AddMovieForm = (props) => {
                         			
                     </div>
                     <div className="modal-footer">
-                        <input type="submit" className="btn btn-success" value="Add"/>
+                        <input type="submit" className="btn btn-success" value="Add" />
                         <Link to={`/movies`}><input type="button" className="btn btn-default" value="Cancel"/></Link>
                     </div>
                 </form>
@@ -67,4 +71,10 @@ const AddMovieForm = (props) => {
     </div>);
 }
 
-export default AddMovieForm;
+const mapStateToProps = state => {
+    return {
+        movies: state.movies.movies
+    }
+}
+
+export default connect(mapStateToProps, {addMovie})(AddMovieForm);
